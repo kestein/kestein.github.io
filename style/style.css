@@ -12,3 +12,6 @@
     width: 90%;
     padding-left: 15px;
 }
+.nolist {
+    list-style-type: none;
+}

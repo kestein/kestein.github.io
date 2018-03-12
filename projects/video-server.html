@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/style/style.css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+        <meta name="author" content="Kevin Stein"/>
+        <title>Video Server</title>
+    </head>
+
+    <body>
+        <div>
+            <div class="sidebar">
+                <a href=/index.html>Home</a><br/>
+                <a href=/projects.html>Projects</a><br/>
+                <a href=/contact.html>Contact</a><br/>
+            </div>
+            <div class="main">
+                <div>
+                    <h1>Video Server</h1>
+                    <img src=/assets/video-server-ui.png>
+                    <img src=/assets/video-server-screenshot.png>
+                </div>
+                <div>
+                    <h2>OVERVIEW</h2>
+                    <li><a href="https://github.com/kestein/video-server" target="_blank">Github</a></li>
+                    <li>Language: Go, HTML, Javascript</li>
+                    <li>Libraries: libmpv</li>
+                    <li>Purpose: A remote control around a remote mpv instance</li>
+                </div>
+                <p>
+                <p>
+                <div>
+                    I enjoy watching videos off of my computer, however I disliked constantly having to move all of my laptop components to and from my TV area. The easy solution was to build a dedicated computer that was always hooked up to my TV, that way I would never have to move my components around. The next problem that I faced was interfacing with whatever video player I was using for my videos. For a while I used a mouse and keyboard from my couch to navigate my desktop, however the using the peripherals without a hard surface tend to hurt my wrists after a while. In fear of the dreaded carpal tunnel, I decided that using a tablet as an interface to my media player would be better for my wrists. 
+                    <p>
+                    <h3>VLC vs MPV</h3>
+                    There are thousands of discussions online about which media players are the best so I'm not going to go into detail here. I initially used VLC as my media player since it worked on linux and I was familiar with the tool. After the initial implementation I unfortunately found out that opengl was not enabled by default when launching an instance of VLC from the provided library. Additionally I was not able to find anywhere in the libvlc documentation about how to enable opengl via the API. This was a problem since I purposefully underprovisioned my server since I was going to use opengl to handle most of the video rendering. Around this time mpc had announced that maintenance was going to be slowing down due to lack of developers. Given this news, mpv users began to provide a lot of help for people making the switch. That was when I looked into using libmpv since it offered an easy way to enable opengl along with many other useful configurations. 
+                    <p>
+                    <h3>User Interface</h3>
+                    Keeping with the common trend of "minimalism" the UI is very plain. Files are presented similar to a file browser with folders populating themselves with their contents when accessed. The video player displays basic information about the progress of the video along with some playback options. A lot could be added to the interface but this is all I really need to watch most of the videos that I have. My favorite thing about the interface is that it keeps track of key points in the video whenever I click on the "Timestamp" button. This allows me to watch the video all the way through the first time and then go back easily to screenshot anything I want. 
+                    <p>
+                    Overall the system works very well. Only downside is that I've put off adding features since I'm too busy using my software. Then again at some point you just have to enjoy what you've made because there will always be some room for improvement.
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
