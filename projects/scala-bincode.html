@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/style/style.css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+        <meta name="author" content="Kevin Stein"/>
+        <title>Scala Bincode Deserializer</title>
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <a href=/index.html>Home</a><br/>
+            <a href=/projects.html>Projects</a><br/>
+            <a href=/contact.html>Contact</a><br/>
+        </div>
+        <div class="main">
+            <div>
+                <h1>Scala Bincode Deserializer</h1>
+            </div>
+            <div>
+                <h2>OVERVIEW</h2>
+                <li><a href="https://github.com/kestein/Bincode-Deserializer" target="_blank">Github</a></li>
+                <li>Language: Scala</li>
+                <li>Libraries: jmh, jackson</li>
+                <li>Purpose: Scala implementation of the <a href=https://github.com/TyOverby/bincode target="_blank">bincode</a> format</li>
+            </div>
+            <p>
+            <p>
+            <div>
+                At my previous work a colleague of mine was working on making a pipeline to ingest our files, which were output in the bincode format, into a spark based system. There were large performance constraints since, in order to do so in the fastest time frame, the files had to be converted to JSON which a dataframe could read. This worked find for smaller data loads (~2TB), but as the load went larger and larger (~5TB) there were performance constraints. Although I did this project after I left the company, it was a good project to improve my scala skills.
+                <p>
+                <h3>Implementation</h3>
+                I wanted to stay as faithful as possible to the way the deserialization was done in rust, so I made the library similar to the <a href=https://serde.rs target="_blank">serde</a> framework. Implementing custom deserializers was always a bit complicated in rust so I simplified it heavily; there are all the functions necessary to deserialize primitive types and traits set up to deserialize more complex types (maps, structs, enums, etc).
+                <p>
+                To ensure that the way the scala code was reading conformed to what rust was writing I made a test application in rust to output records in bincode, then read them in from scala. After some initial tweaks (endianness issues as always) I was able to get the same records in rust and scala. 
+                <p>
+                <h3>Performance</h3>
+                Performance benchmarks were run using Openjdk's <a href=https://openjdk.java.net/projects/code-tools/jmh target="_blank">jmh</a> performance testing harness. Using the scala plugin and sbt I benchmarked the various different ways the records could have been ingested:
+                <li><b>Bincode->Json->Scala Object.</b> This one was obviously the slowest as reading in the bincode and outputting the json was the bottleneck. The deserialization speed of a json deserializer would never beat the time it took to convert the record formats.</li>
+                <li><b>Json->Scala Object.</b> Jackson was the json deserializer of choice for this benchmark. You can do a lot more deserializing this way (using parallel iterators), but in terms of just raw deserialization jackson was very slightly slower for the low record tests I was able to run.</li>
+                <li><b>Bincode->Scala Object.</b> Using the deserializer I replicated the format of the rust struct and plugged the bincode directly into the scala deserializer. The deserialization time was overall faster, however without the parallel iterator optimizations it was not.</li>
+                            Of course I ran into the many pitfalls of performance testing; using different iterators (one optimized for parallel string reading), abusing caching, etc. However after small scale test runs the two methods appear the same, with the native bincode reader beating out the json one. Due to machine limitations I have not been able to benchmark large records sizes (larger than 10,000), however I would like to so I can get a more definitive answer.
+                <p>
+            </div>
+        </div>
+    </body>
+</html>
+
